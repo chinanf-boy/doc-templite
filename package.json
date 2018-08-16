@@ -51,8 +51,7 @@
 		"turbocolor": "^2.4.5",
 		"two-log": "^0.0.10",
 		"underscore": "^1.9.1",
-		"update-section": "^0.3.3",
-		"weoptions": "^0.0.11"
+		"update-section": "^0.3.3"
 	},
 	"devDependencies": {
 		"codecov": "^3.0.2",
