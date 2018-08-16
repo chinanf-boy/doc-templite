@@ -1,17 +1,13 @@
 
-# doc-templite[![Build Status](https://travis-ci.org/chinanf-boy/doc-templite.svg?branch=master)](https://travis-ci.org/chinanf-boy/doc-templite) [![codecov](https://codecov.io/gh/chinanf-boy/doc-templite/badge.svg?branch=master)](https://codecov.io/gh/chinanf-boy/doc-templite?branch=master)
+# doc-templite[![Build Status](https://travis-ci.org/chinanf-boy/doc-templite.svg?branch=master)](https://travis-ci.org/chinanf-boy/doc-templite) [![codecov](https://codecov.io/gh/chinanf-boy/doc-templite/badge.svg?branch=master)](https://codecov.io/gh/chinanf-boy/doc-templite?branch=master) [![explain](http://llever.com/explain.svg)](https://github.com/chinanf-boy/doc-templite-explain)
 
-<!-- [![explain](http://llever.com/explain.svg)](https://github.com/chinanf-boy/doc-templite-explain) -->
+为 多个md文件 准备的模版工具
 
-使用多个md文件准备的模版
-
-> 当我们使用 多个文件或者多项目的`readme.md`时,样式可以帮助我们说出或显示某些东西,比如 md表,但下次我想要一个md链接. 太麻烦了更改这些文件,所以`doc-templite`也许有帮助.
+> 当我们使用 多个文件或者多项目的`readme.md`时,样式可以帮助我们说出或显示某些东西,比如 md 表格,但下次我想要一个 md 网络链接. 太麻烦了! 去修改更改这些文件,所以`doc-templite`也许有帮助.
 
 [中文](./readme.zh.md)\|[英语](./readme.md)
 
 ## 施工✅
-
-⏰2018 8.15 开始
 
 ## 安装
 
@@ -32,9 +28,10 @@ age = 18 -->
 ```
 
 > **注意:**在 START-END 块中,我们使用的是 toml 和 `<!-- -->`
-> 多行注释只能一段, 单行注释可以多个
 
-2.  需要 templite 文件`.doc-templite.js`在命令行运行时的目录
+> 多行注释只能**一段**, 单行注释可以**多个**
+
+2.  需要 templite 文件`.doc-templite.js`,在命令行运行时的目录
 
 > 注意: readme 字段匹配`1. readme.md`中的`<! -  doc-templite-id ='readme' - >`
 
@@ -48,26 +45,29 @@ module.export = {
 
 > 注意: 默认 `docTempliteId === 'readme'`
 
-3.  运行`doc-templite .`, 目录下要有 `.doc-templite.js` 文件喔
+3.  运行`doc-templite .`
 
 > 搜索所有文件,但只会修改有 **doc-templite标签** 的文件
 
     doc-templite .
 
+> 目录下要有 `.doc-templite.js` 文件喔
+
 4.  做完了,`readme.md`文件内容变成
 
+```
+<!-- doc-templite START -->
+<!-- doc-templite-id = 'readme' -->
 
-    <!-- doc-templite START -->
-    <!-- doc-templite-id = 'readme' -->
+<!-- name = 'yobrave'
+age = 18 -->
 
-    <!-- name = 'yobrave'
-    age = 18 -->
+name | age
+---------|----------
+yobrave | 18
 
-    name | age
-    ---------|----------
-    yobrave | 18
-
-    <!-- doc-templite END -->
+<!-- doc-templite END -->
+```
 
 | 名称      | 年龄  |
 | ------- | --- |
@@ -112,7 +112,7 @@ Type: | `boolean`
 Default: | `false`
 Desc: | Lorem ipsum. -->
 
-## concat
+## 启发与关联
 
 -   [doctoc](https://github.com/thlorenz/doctoc) 生成markdown文件的目录
 -   [templite](https://github.com/lukeed/templite) 轻量级模板,150字节

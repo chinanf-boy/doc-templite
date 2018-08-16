@@ -1,17 +1,12 @@
-# doc-templite [![Build Status](https://travis-ci.org/chinanf-boy/doc-templite.svg?branch=master)](https://travis-ci.org/chinanf-boy/doc-templite) [![codecov](https://codecov.io/gh/chinanf-boy/doc-templite/badge.svg?branch=master)](https://codecov.io/gh/chinanf-boy/doc-templite?branch=master)
+# doc-templite [![Build Status](https://travis-ci.org/chinanf-boy/doc-templite.svg?branch=master)](https://travis-ci.org/chinanf-boy/doc-templite) [![codecov](https://codecov.io/gh/chinanf-boy/doc-templite/badge.svg?branch=master)](https://codecov.io/gh/chinanf-boy/doc-templite?branch=master) [![explain](http://llever.com/explain.svg)](https://github.com/chinanf-boy/doc-templite-explain)
 
-<!-- [![explain](http://llever.com/explain.svg)](https://github.com/chinanf-boy/doc-templite-explain) -->
-
-templite with Multi md docs
+templite tool for Multi-md files
 
 > while we work with Multi-file/repos-readme.md, some style help us to say or show something ,like a md table , but next time i want a md link. too busy to change those files, So `doc-templite` maybe help.
 
 [中文](./readme.zh.md) | [english](./readme.md)
 
 ## created✅
-
-⏰ 2018 8.15 start
-⏰ 2018 8.16 end
 
 ## Install
 
