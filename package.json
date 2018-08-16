@@ -8,7 +8,7 @@
 	"author": {
 		"name": "chinanf-boy",
 		"email": "865501259@qq.com",
-		"url": "llever.com"
+		"url": "http://llever.com"
 	},
 	"bin": "cli.js",
 	"engines": {
@@ -34,7 +34,8 @@
 		]
 	},
 	"files": [
-		"cli.js"
+		"cli.js",
+		"src/**"
 	],
 	"keywords": [
 		"cli-app",

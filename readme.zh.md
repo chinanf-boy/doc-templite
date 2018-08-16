@@ -3,7 +3,7 @@
 
 <!-- [![explain](http://llever.com/explain.svg)](https://github.com/chinanf-boy/doc-templite-explain) -->
 
-使用Multi md docs的templite
+使用多个md文件准备的模版
 
 > 当我们使用 多个文件或者多项目的`readme.md`时,样式可以帮助我们说出或显示某些东西,比如 md表,但下次我想要一个md链接. 太麻烦了更改这些文件,所以`doc-templite`也许有帮助.
 
