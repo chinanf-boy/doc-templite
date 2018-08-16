@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"description": "templite with muit md docs ",
 	"license": "MIT",
-	"main": "index.js",
+	"main": "doc-templite.js",
 	"repository": "chinanf-boy/doc-templite",
 	"author": {
 		"name": "chinanf-boy",
@@ -15,7 +15,7 @@
 		"node": ">=4"
 	},
 	"scripts": {
-		"test": "nyc ava -v",
+		"test": "nyc ava -v -s",
 		"precommit": "lint-staged",
 		"pub": "npm run test && npm run npmUp && npm run git",
 		"npmUp": "npm version patch && npm publish",
@@ -39,12 +39,20 @@
 	"keywords": [
 		"cli-app",
 		"cli",
-		""
+		"doc",
+		"templite",
+		"md"
 	],
 	"dependencies": {
+		"dlv": "^1.1.2",
 		"meow": "^5.0.0",
-		"weoptions": "^0.0.11",
-		"two-log": "^0.0.10"
+		"templite": "^1.1.0",
+		"toml": "^2.3.3",
+		"turbocolor": "^2.4.5",
+		"two-log": "^0.0.10",
+		"underscore": "^1.9.1",
+		"update-section": "^0.3.3",
+		"weoptions": "^0.0.11"
 	},
 	"devDependencies": {
 		"codecov": "^3.0.2",

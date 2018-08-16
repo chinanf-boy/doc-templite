@@ -24,7 +24,7 @@ npm i -g doc-templite
 
 ``` html
 <!-- doc-templite START -->
-<!-- doc-templite-id = 'readme' -->
+<!-- docTempliteId = 'readme' -->
 
 <!-- name = 'yobrave'
 age = 18 -->
@@ -32,14 +32,15 @@ age = 18 -->
 <!-- doc-templite END -->
 ```
 
-> Note in START-END block, we use toml and with `<!-- -->`
+> Note: in START-END block, we use toml and with `<!-- -->`
+> Multi-line only allow **one**, Single-line can **more**
 
 2. need templite file `.doc-templite.js` in cli pwd
 
-> Note: readme field match `<!-- doc-templite-id = 'readme' -->` of `1. readme.md`
+> Note: readme field match `<!-- docTempliteId = 'readme' -->` of `1. readme.md`
 
 ``` js
-module.export = {
+module.exports = {
   readme:`name | age
 ---------|----------
  {{ name }} | {{ age }}`
@@ -58,7 +59,7 @@ doc-templite .
 
 ```
 <!-- doc-templite START -->
-<!-- doc-templite-id = 'readme' -->
+<!-- docTempliteId = 'readme' -->
 
 <!-- name = 'yobrave'
 age = 18 -->

@@ -31,7 +31,8 @@ age = 18 -->
 <!-- doc-templite END -->
 ```
 
-> 注意在 START-END 块中,我们使用的是 toml 和 `<!-- -->`
+> **注意:**在 START-END 块中,我们使用的是 toml 和 `<!-- -->`
+> 多行注释只能一段, 单行注释可以多个
 
 2.  需要 templite 文件`.doc-templite.js`在命令行运行时的目录
 
