@@ -20,10 +20,10 @@ const cli = meow(`
 
 	Example
 		$ doc-templite readme.md
-	
+
 	${b(`⭐ [Options]`)}
 		${g(`-D debug`)} <default:false>
-	
+
 	${m(`⭐ [High Options]`)}
 		${g(`--OR`)} only Read, no reWrite files <default:false>
 `);
@@ -66,16 +66,16 @@ function transformAndSave(files, opts){
 
 	let changeds = transformeds.filter(function (x) { return x.transformed; })
     let unchangeds = transformeds.filter(function (x) { return !x.transformed; })
-	
+
 	unchangeds.forEach(function (x) {
-		log.text(`"${x.path}" is up to date`, );
+		log.text(`"${x.path}" no transform`);
 	  });
-	
-	changeds.forEach(function (x) { 
+
+	changeds.forEach(function (x) {
 		if (onlyRead) {
-		  log.text(`===> ${c(x.path)} need to update`)
+		  log.one(`===> ${c(x.path)} need to update`)
 		} else {
-		  log.text(`${c(x.path)} updated`);
+		  log.one(`${c(x.path)} updated`);
 		  fs.writeFileSync(x.path, x.data, 'utf8');
 		}
 	});
@@ -86,7 +86,7 @@ for (let i = 0; i < cli.input.length; i++){
 	let target = cleanPath(cli.input[i]);
 	let stat = fs.statSync(target);
 
-	log.text(`1. files getting...`)	
+	log.text(`1. files getting...`)
 	if (stat.isDirectory()){
 		files = file.findMarkdownFiles(target)
 	}else{
@@ -103,4 +103,4 @@ for (let i = 0; i < cli.input.length; i++){
 	// log.text(`search markdown file ... ${JSON.stringify(files,null,2)}`)
 }
 
-log.stop(`doc-templite done`,{ora:'succeed'})
+log.stop(`doc-templite done [${onlyRead?"onlyRead":"Write"} mode]`,{ora:'succeed'})

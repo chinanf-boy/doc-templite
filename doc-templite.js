@@ -10,6 +10,7 @@ const tc = require('turbocolor')
 const c = tc.cyan;
 const g = tc.green;
 
+const toS = (str) => JSON.stringify(str, null, 0)
 
 const START = '<!-- doc-templite START generated -->'
 const END   = '<!-- doc-templite END generated -->'
@@ -17,7 +18,7 @@ const END   = '<!-- doc-templite END generated -->'
 function matchesStart(line) {
 	return (/<!-- doc-templite START/).test(line);
   }
-  
+
 function matchesEnd(line) {
 	return (/<!-- doc-templite END/).test(line);
 }
@@ -25,7 +26,7 @@ function matchesEnd(line) {
 function remarkStart(line) {
 	return (/<!--/).test(line);
   }
-  
+
 function remarkEnd(line) {
 	return (/-->/).test(line);
 }
@@ -51,13 +52,16 @@ module.exports = function docTemplite(content, opts){
 
 	// must had doc-templite tag
 	let lines = content.split(os.EOL)
-	loggerText(g('all:'+lines.length))
-	let info = updateSection.parse(lines, matchesStart, matchesEnd);
-	loggerText(info)
-	let currentBlocks = info.hasStart && lines.slice(info.startIdx + 1, info.endIdx)
-	loggerText(g('block:'+currentBlocks))
 
-	if(currentBlocks.join(os.EOL).trim()){
+	let info = updateSection.parse(lines, matchesStart, matchesEnd);
+
+	let currentBlocks = info.hasStart && lines.slice(info.startIdx + 1, info.endIdx) || []
+
+	if (currentBlocks.join(os.EOL).trim()) {
+		loggerText(c(`${opts.path} had doc-templite <-tags->`))
+		loggerText(g('all:'+lines.length))
+		loggerText(`<-tags->: ${toS(info)}`)
+		loggerText(g('block:'+currentBlocks))
 		let onlyRemark = currentBlocks.filter(function(line){
 			line = line.trim()
 			return isRemark(line)
@@ -68,7 +72,7 @@ module.exports = function docTemplite(content, opts){
 		})
 		let mRinfo = updateSection.parse(removeSingle, remarkStart, remarkEnd)
 		let mulitRemark = mRinfo.hasStart && removeSingle.slice(mRinfo.startIdx,mRinfo.endIdx+1) || []
-		loggerText(mRinfo)
+		loggerText(`tomls-position: ${toS(mRinfo)}`)
 		loggerText(mulitRemark)
 		onlyRemark = onlyRemark.concat(mulitRemark.join(os.EOL))
 
@@ -101,19 +105,18 @@ module.exports = function docTemplite(content, opts){
 			loggerText(c('Transformed:\n'+templiteTransformed))
 
 			let update = `${START}${os.EOL}${onlyRemark.join(os.EOL)}${os.EOL}${templiteTransformed}${os.EOL}${ END}`
-	
+
 			data = updateSection(content, update, matchesStart, matchesEnd, false)
-	
-			if(data){
+
+			if (data) {
+				// loggerText(c(JSON.stringify(data)))
 				transformed = true;
 			}
 		}else{
 			oneOra(`${c(opts.path)} ${g(mergeOpts.docTempliteId)} no match`,{end: 'fail'})
 		}
 	}
-	
-	loggerText(c(JSON.stringify(data)))
-	
+
 	let result = {
 		path: opts.path,
 		toml: mergeOpts,

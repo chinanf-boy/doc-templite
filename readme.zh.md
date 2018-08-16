@@ -9,7 +9,7 @@
 
 [中文](./readme.zh.md)\|[英语](./readme.md)
 
-## 施工-createing🀄️
+## 施工✅
 
 ⏰2018 8.15 开始
 
@@ -46,6 +46,8 @@ module.export = {
 }
 ```
 
+> 注意: 默认 `docTempliteId === 'readme'`
+
 3.  运行`doc-templite .`, 目录下要有 `.doc-templite.js` 文件喔
 
 > 搜索所有文件,但只会修改有 **doc-templite标签** 的文件
@@ -75,13 +77,19 @@ module.export = {
 
     npm install --global doc-templite
 
-    $ doc-templite --help
+```
+    Usage
+  	$ doc-templite [folder/file name] [Optioins]
 
-      Usage
-        $ doc-templite [folder/file name]
+	Example
+		$ doc-templite readme.md
 
-      Example
-        $ doc-templite readme.md
+	⭐ [Options]
+		-D debug <default:false>
+
+	⭐ [High Options]
+		--OR  only Read, no reWrite files <default:false>
+```
 
 <!-- ## API
 
@@ -106,10 +114,10 @@ Desc: | Lorem ipsum. -->
 
 ## concat
 
--   [doctoc](https://github.com/thlorenz/doctoc)生成markdown文件的目录
--   [templite](https://github.com/lukeed/templite)轻量级模板,150字节
--   [toml](https://github.com/toml-lang/toml)汤姆的明显,最小的语言
+-   [doctoc](https://github.com/thlorenz/doctoc) 生成markdown文件的目录
+-   [templite](https://github.com/lukeed/templite) 轻量级模板,150字节
+-   [toml](https://github.com/toml-lang/toml) 列表语法,最小的语言
 
 ## 执照
 
-麻省理工学院©[chinanf男孩](http://llever.com)
+麻省理工学院©[chinanf-boy](http://llever.com)

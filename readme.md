@@ -8,9 +8,10 @@ templite with Multi md docs
 
 [中文](./readme.zh.md) | [english](./readme.md)
 
-## 施工-createing🀄️
+## created✅
 
-⏰ 2018 8.15 开始
+⏰ 2018 8.15 start
+⏰ 2018 8.16 end
 
 ## Install
 
@@ -37,7 +38,7 @@ age = 18 -->
 
 2. need templite file `.doc-templite.js` in cli pwd
 
-> Note: readme field match `<!-- docTempliteId = 'readme' -->` of `1. readme.md`
+> readme field match `<!-- docTempliteId = 'readme' -->` of `1. readme.md`
 
 ``` js
 module.exports = {
@@ -46,6 +47,8 @@ module.exports = {
  {{ name }} | {{ age }}`
 }
 ```
+
+> NOTE: default `docTempliteId === 'readme'`
 
 3. run cli `doc-templite .` with `.doc-templite.js` dir
 
@@ -85,14 +88,17 @@ npm install --global doc-templite
 ```
 
 ```
-$ doc-templite --help
-
   Usage
-    $ doc-templite [folder/file name]
+  	$ doc-templite [folder/file name] [Optioins]
 
-  Example
-    $ doc-templite readme.md
+	Example
+		$ doc-templite readme.md
 
+	⭐ [Options]
+		-D debug <default:false>
+
+	⭐ [High Options]
+		--OR  only Read, no reWrite files <default:false>
 ```
 
 
