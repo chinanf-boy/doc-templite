@@ -32,7 +32,7 @@ test('each toml with single remark', t => {
     let result = doc(f,opts)
     let {transformed,data,toml} = result
 
-    t.is(Object.keys(toml).length,3);
+    t.is(Object.keys(toml).length,1);
     t.true(transformed);
     t.regex(data,Regex)
 });
@@ -47,14 +47,18 @@ test('one remark with tomls ', t => {
     let result = doc(f,opts)
     let {transformed,data,toml} = result
 
-    t.is(Object.keys(toml).length,3);
+    t.is(Object.keys(toml).length,1);
     t.true(transformed);
     t.regex(data,Regex)
 });
 
 test('more doc-templite tag', t => {
-    const p = path.resolve(testDir,'./features/more-doc-templite-tag.md')
-    const f = fs.readFileSync(p,'utf8');
+	const p = path.resolve(testDir,'./features/more-doc-templite-tag.md')
+    const genPath = path.resolve(testDir,'./features/gen-more-doc-templite-tag.md')
+
+	const f = fs.readFileSync(p,'utf8');
+    const gen = fs.readFileSync(genPath,'utf8');
+
     let opts = {
         path:p,
         templite,
@@ -62,7 +66,7 @@ test('more doc-templite tag', t => {
     let result = doc(f,opts)
     let {transformed,data,toml} = result
 
-    t.is(Object.keys(toml).length,3);
+    t.is(Object.keys(toml).length,2);
     t.true(transformed);
-    t.regex(data,Regex)
+    t.is(data,gen)
 });
