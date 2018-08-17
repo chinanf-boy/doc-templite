@@ -4,18 +4,12 @@
 <!-- docTempliteId = 'yobrave' -->
 <!-- name = 'yobrave' -->
 <!-- age = 18 -->
-name | age
----------|----------
-yobrave | 18
 <!-- doc-templite END generated -->
 
 <!-- doc-templite START generated -->
 <!-- docTempliteId = 'readme' -->
 <!-- name = 'yobrave' -->
 <!-- age = 18 -->
-name | age
----------|----------
-yobrave | 18
 <!-- doc-templite END generated -->
 
 
