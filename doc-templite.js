@@ -5,23 +5,21 @@ const os = require('os')
 const dlv = require('dlv');
 const templiteParse = require('templite')
 const { oneOra,loggerText } = require('two-log')
-const tc = require('turbocolor')
-const c = tc.cyan;
-const g = tc.green;
+const {c,g} = require('./src/util')
 
 const updateTemplite = require('./src/updateTemplite')
-
-const toS = (str) => JSON.stringify(str, null, 2)
+const errorInfo = require('./src/errorInfo')
+const {toS} = require('./src/util')
 
 const START = '<!-- doc-templite START generated -->'
 const END   = '<!-- doc-templite END generated -->'
 
 function matchesStart(line) {
-	return (/<!-- doc-templite START/).test(line);
+	return line.startsWith('<!-- doc-templite START');
   }
 
 function matchesEnd(line) {
-	return (/<!-- doc-templite END/).test(line);
+	return line.startsWith('<!-- doc-templite END')
 }
 
 function remarkStart(line) {
@@ -64,7 +62,8 @@ module.exports = function docTemplite(content, opts){
 		if(tag.hasStart && tag.hasEnd){
 			currentBlocks.push(lines.slice(tag.startIdx + 1, tag.endIdx))
 		}else if(tag.hasStart || tag.hasEnd){
-			throw new Error(`${opts.path} - doc-templite tag not Closed: START:=>${tag.startIdx} END:=>${tag.endIdx}`)
+			let E = errorInfo('tag',{tag,lines})
+			throw new Error(`${c(opts.path)}\n - doc-templite tag not Closed:\n${E}`)
 		}
 	})
 	// currentBlock : [[],[]] || []
@@ -94,12 +93,11 @@ module.exports = function docTemplite(content, opts){
 				if(tag.hasStart && tag.hasEnd){
 					currentRemarks.push(removeSingle.slice(tag.startIdx,tag.endIdx+1))
 				}else if(tag.hasStart || tag.hasEnd){
-					throw new Error(`${opts.path} - Toml not Closed: START:=>${tag.startIdx} END:=>${tag.endIdx}`)
+					let E = errorInfo('remark',{tag,lines:removeSingle})
+					throw new Error(`${c(opts.path)} - Toml not Closed:\n'${E}`)
 				}
 			})
 
-			// let mRinfo = updateSection.parse(removeSingle, remarkStart, remarkEnd)
-			// let mulitRemark = mRinfo.hasStart && removeSingle.slice(mRinfo.startIdx,mRinfo.endIdx+1) || []
 			let mulitRemark = []
 			if(currentRemarks.length){
 
@@ -122,7 +120,8 @@ module.exports = function docTemplite(content, opts){
 				try{
 					userToml = toml.parse(ready2Toml)
 				}catch(e){
-					oneOra(`${c(opts.path)} TOML Parse error: ${c(e.message)}`,{end:'fail'});
+					let E = errorInfo('toml',{e,line:ready2Toml})
+					throw new Error(`${c(opts.path)} TOML Parse error:\n${E}`);
 				}
 				return userToml
 			})
@@ -136,7 +135,7 @@ module.exports = function docTemplite(content, opts){
 
 			let ID = mergeOpts.docTempliteId || 'readme';
 			let id2Templite = dlv(opts.templite, ID)
-			loggerText(c('templite:\n'+id2Templite))
+			loggerText(c(`templite <${ID}>:\n`+id2Templite))
 
 			if(id2Templite){
 				let templiteTransformed = templiteParse(id2Templite, mergeOpts)
@@ -153,7 +152,7 @@ module.exports = function docTemplite(content, opts){
 					}
 				}
 			}else{
-				oneOra(`${c(opts.path)} ${g(mergeOpts.docTempliteId)} no match`,{end: 'fail'})
+				throw new Error(`${c(opts.path)} no match doc-templite \nid:${g(mergeOpts.docTempliteId)} `)
 			}
 		}
 	}else{

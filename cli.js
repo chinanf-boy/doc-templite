@@ -3,12 +3,7 @@
 const meow = require('meow');
 const fs = require('fs')
 const { twoLog } = require('two-log')
-const tc = require('turbocolor')
-const g = tc.green;
-const c = tc.cyan;
-const y = tc.yellow;
-const b = tc.blue;
-const m = tc.magenta
+const {g,c,y,b,m,r} = require('./src/util')
 
 const file = require('./src/file')
 const docTemplite = require('./doc-templite');
@@ -98,7 +93,8 @@ for (let i = 0; i < cli.input.length; i++){
 	try{
 		transformAndSave(files, opts)
 	}catch(e){
-		console.log(tc.red('\n'+e.stack))
+		console.log(r('\n'+e.stack))
+		process.exitCode = 1
 	}
 	// log.text(`search markdown file ... ${JSON.stringify(files,null,2)}`)
 }
