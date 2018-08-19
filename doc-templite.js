@@ -56,7 +56,7 @@ module.exports = function docTemplite(content, opts){
 	loggerText(c(`${opts.path} searching doc-templite <-tags->`))
 	loggerText(g('all:'+lines.length))
 
-	let tags = updateTemplite.parse(lines, matchesStart, matchesEnd);
+	let tags = updateTemplite.parse(lines, matchesStart, matchesEnd, true);
 
 	tags.forEach(function(tag){
 		if(tag.hasStart && tag.hasEnd){
@@ -86,7 +86,7 @@ module.exports = function docTemplite(content, opts){
 				return !isRemark(line)
 			})
 
-			let mulitRemarkPtn = updateTemplite.parse(removeSingle, remarkStart, remarkEnd)
+			let mulitRemarkPtn = updateTemplite.parse(removeSingle, remarkStart, remarkEnd, false)
 			let currentRemarks = []
 
 			mulitRemarkPtn.forEach(function(tag){
@@ -147,8 +147,11 @@ module.exports = function docTemplite(content, opts){
 
 				if (data) {
 					// loggerText(c(toS(data)))
+
 					if(i == currentBlocks.length - 1){
-						transformed = true;
+						if(data !== content){
+							transformed = true;
+						}
 					}
 				}
 			}else{

@@ -64,7 +64,7 @@ function transformAndSave(files, opts){
     let unchangeds = transformeds.filter(function (x) { return !x.transformed; })
 
 	unchangeds.forEach(function (x) {
-		log.text(`"${x.path}" no transform`);
+		log.text(`${c(x.path)} no transform / same content`);
 	  });
 
 	changeds.forEach(function (x) {

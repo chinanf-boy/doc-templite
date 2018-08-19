@@ -16,9 +16,10 @@ let oneStore = null
  * @param {Array.<string>} lines the lines in which to look for matches
  * @param {Function} matchesStart when called with a line needs to return true iff it is the section start line
  * @param {Function} matchesEnd when called with a line needs to return true iff it is the section end line
+ * @param {Boolean}  matchTag just True will keep result:tags
  * @return {Array.<Object>} with the following properties: hasStart, hasEnd, startIdx, endIdx
  */
-function parse(lines, matchesStart, matchesEnd) {
+function parse(lines, matchesStart, matchesEnd, matchTag) {
   var startIdx = -1
     , endIdx = -1
     , hasStart = false
@@ -56,7 +57,7 @@ function parse(lines, matchesStart, matchesEnd) {
 	}
 
 
-	if(tags.length === 1){
+	if(tags.length === 1 && matchTag){
 		oneStore = tags
 	}
   return tags;
