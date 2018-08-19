@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+console.time('doc-templite')
 const meow = require('meow');
 const fs = require('fs')
 const { twoLog } = require('two-log')
@@ -100,3 +101,4 @@ for (let i = 0; i < cli.input.length; i++){
 }
 
 log.stop(`doc-templite done [${onlyRead?"onlyRead":"Write"} mode]`,{ora:'succeed'})
+console.timeEnd('doc-templite')

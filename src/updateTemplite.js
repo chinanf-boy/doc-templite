@@ -1,6 +1,7 @@
 'use strict';
 
 const os = require('os')
+let oneStore = null
 /**
  * Copy from doctoc
  *
@@ -55,7 +56,9 @@ function parse(lines, matchesStart, matchesEnd) {
 	}
 
 
-
+	if(tags.length === 1){
+		oneStore = tags
+	}
   return tags;
 }
 
@@ -80,7 +83,8 @@ exports = module.exports = function updateSection(content, section, matchesStart
 	var lines = content.split(os.EOL)
 	if (!lines.length) return section;
 
-	var tags = parse(lines, matchesStart, matchesEnd);
+	var tags = oneStore || parse(lines, matchesStart, matchesEnd);
+	oneStore = null
 
 	let tag = tags[index]
 
