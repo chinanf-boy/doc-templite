@@ -1,6 +1,6 @@
 {
 	"name": "doc-templite",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "templite with muit md docs ",
 	"license": "MIT",
 	"main": "doc-templite.js",
