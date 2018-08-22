@@ -4,7 +4,7 @@ const toml = require('toml');
 const os = require('os')
 const dlv = require('dlv');
 const templiteParse = require('templite')
-const { oneOra,loggerText } = require('two-log')
+const { oneOra,loggerText } = require('two-log-min')
 const {c,g} = require('./src/util')
 
 const updateTemplite = require('./src/updateTemplite')

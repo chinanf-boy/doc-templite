@@ -1,4 +1,4 @@
-const {loggerStop} = require('two-log')
+const {loggerStop} = require('two-log-min')
 const {toS} = require('./util')
 const {c,g} = require('./util')
 

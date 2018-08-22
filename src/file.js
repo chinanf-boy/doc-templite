@@ -3,7 +3,7 @@ const fs  =  require('fs')
 const _   =  require('underscore');
 const tc = require('turbocolor')
 const g = tc.green;
-let { loggerText } = require('two-log')
+let { loggerText } = require('two-log-min')
 
 var markdownExts = ['.md', '.markdown'];
 var ignoredDirs  = ['.', '..', '.git', 'node_modules'];
@@ -13,8 +13,8 @@ function separateFilesAndDirs(fileInfos) {
     directories :  _(fileInfos).filter(function (x) {
       return x.isDirectory() && !_(ignoredDirs).include(x.name);
     }),
-    markdownFiles :  _(fileInfos).filter(function (x) { 
-      return x.isFile() && _(markdownExts).include(path.extname(x.name)); 
+    markdownFiles :  _(fileInfos).filter(function (x) {
+      return x.isFile() && _(markdownExts).include(path.extname(x.name));
     })
   };
 }
@@ -24,22 +24,22 @@ function findRec(currentPath) {
     var target = path.join(currentPath, entry),
       stat = fs.statSync(target);
 
-    return  _(stat).extend({ 
+    return  _(stat).extend({
       name: entry,
       path: target
     });
   }
-  
+
   function process (fileInfos) {
     var res = separateFilesAndDirs(fileInfos);
     var tgts = _(res.directories).pluck('path');
 
-    if (res.markdownFiles.length > 0) 
+    if (res.markdownFiles.length > 0)
       loggerText(`1. Found ${g(_(res.markdownFiles).pluck('name').join(', '))} in ${g(currentPath)}`);
-    else 
+    else
       loggerText(`1. Found nothing in ${g(currentPath)}`);
 
-    return { 
+    return {
       markdownFiles :  res.markdownFiles,
       subdirs     :  tgts
     };
@@ -54,7 +54,7 @@ function findRec(currentPath) {
 }
 
 // Finds all markdown files in given directory and its sub-directories
-// @param {String  } dir - the absolute directory to search in 
+// @param {String  } dir - the absolute directory to search in
 exports.findMarkdownFiles = function(dir) {
   return findRec(dir);
 };

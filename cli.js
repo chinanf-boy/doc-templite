@@ -3,7 +3,7 @@
 console.time('doc-templite')
 const meow = require('meow');
 const fs = require('fs')
-const { twoLog } = require('two-log')
+const twoLog = require('two-log-min')
 const {g,c,y,b,m,r} = require('./src/util')
 
 const file = require('./src/file')
