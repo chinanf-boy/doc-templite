@@ -55,17 +55,21 @@ module.exports = function docTemplite(content, opts){
 
 	loggerText(c(`${opts.path} searching doc-templite <-tags->`))
 	loggerText(g('all:'+lines.length))
+	let tags;
 
-	let tags = updateTemplite.parse(lines, matchesStart, matchesEnd, true);
+	try{
 
-	tags.forEach(function(tag){
-		if(tag.hasStart && tag.hasEnd){
-			currentBlocks.push(lines.slice(tag.startIdx + 1, tag.endIdx))
-		}else if(tag.hasStart || tag.hasEnd){
-			let E = errorInfo('tag',{tag,lines})
-			throw new Error(`${c(opts.path)}\n - doc-templite tag not Closed:\n${E}`)
-		}
-	})
+		tags = updateTemplite.parse(lines, matchesStart, matchesEnd, true);
+
+		tags.forEach(function(tag){
+			if(tag.hasStart && tag.hasEnd){
+				currentBlocks.push(lines.slice(tag.startIdx + 1, tag.endIdx))
+			}
+		})
+
+	}catch(err){
+		throw new Error(`${c(opts.path)}\n - doc-templite tag:\n${err.message}`)
+	}
 	// currentBlock : [[],[]] || []
 	if (currentBlocks.length) {
 		loggerText(c(`${opts.path} had <-tags->`))
@@ -85,18 +89,19 @@ module.exports = function docTemplite(content, opts){
 				line = line.trim()
 				return !isRemark(line)
 			})
-
-			let mulitRemarkPtn = updateTemplite.parse(removeSingle, remarkStart, remarkEnd, false)
+			let mulitRemarkPtn
 			let currentRemarks = []
+			try{
 
-			mulitRemarkPtn.forEach(function(tag){
-				if(tag.hasStart && tag.hasEnd){
-					currentRemarks.push(removeSingle.slice(tag.startIdx,tag.endIdx+1))
-				}else if(tag.hasStart || tag.hasEnd){
-					let E = errorInfo('remark',{tag,lines:removeSingle})
-					throw new Error(`${c(opts.path)} - Toml not Closed:\n'${E}`)
-				}
-			})
+				mulitRemarkPtn = updateTemplite.parse(removeSingle, remarkStart, remarkEnd, false)
+				mulitRemarkPtn.forEach(function(tag){
+					if(tag.hasStart && tag.hasEnd){
+						currentRemarks.push(removeSingle.slice(tag.startIdx,tag.endIdx+1))
+					}
+				})
+			}catch(err){
+					throw new Error(`${c(opts.path)} - Toml:\n'${err.message}`)
+			}
 
 			let mulitRemark = []
 			if(currentRemarks.length){

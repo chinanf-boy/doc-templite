@@ -48,8 +48,8 @@ test.serial('tags with no Closed Error: more START', t => {
         templite,
 	}
 
-	const e = 'doc-templite tag not Closed'
-	const details = 'Need doc-templite END'
+	const e = 'doc-templite tag'
+	const details = 'not Closed'
 	const msg = t.throws(() =>doc(f,opts));
 	t.true(msg.message.includes(e))
 	t.true(msg.message.includes(details))
@@ -64,13 +64,11 @@ test.serial('tags with no Closed Error: more END', t => {
         templite,
 	}
 
-	const e = 'doc-templite tag not Closed'
-	const details = 'Need doc-templite START'
+	const e = 'doc-templite tag'
+	const details = 'not Closed'
 	const msg = t.throws(() =>doc(f,opts));
 	t.true(msg.message.includes(e))
 	t.true(msg.message.includes(details))
-
-
 });
 
 test.serial('more tags with no Closed Remark Error', t => {    const p = path.resolve(testDir,'./errors/no-Closed-Remark-Error.md')
@@ -79,8 +77,10 @@ test.serial('more tags with no Closed Remark Error', t => {    const p = path.re
         path:p,
         templite,
 	}
-	const e = 'Toml not Closed'
+	const e = 'Toml:'
+	const details = 'not Closed'
 	const msg = t.throws(() =>doc(f,opts));
 	t.true(msg.message.includes(e))
+	t.true(msg.message.includes(details))
 
 });
