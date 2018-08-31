@@ -72,12 +72,17 @@ function transformAndSave(files, opts){
 	  });
 
 	changeds.forEach(function (x) {
+		let msg  = ''
 		if (onlyRead) {
-		  log.one(`===> ${c(x.path)} need to update`)
+		  msg = `===> ${c(x.path)} need to update`
 		} else {
-		  log.one(`${c(x.path)} updated`);
+		  msg = `${c(x.path)} ${g('updated')}`
 		  fs.writeFileSync(x.path, x.data, 'utf8');
 		}
+
+		cliLog(msg)
+		log.one(msg)
+
 		howMany ++
 	});
 
