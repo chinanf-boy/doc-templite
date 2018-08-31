@@ -80,8 +80,7 @@ function transformAndSave(files, opts){
 		  fs.writeFileSync(x.path, x.data, 'utf8');
 		}
 
-		cliLog(msg)
-		log.one(msg)
+		log.one(msg,{log:'cli'})
 
 		howMany ++
 	});
