@@ -34,10 +34,14 @@ function findRec(currentPath) {
     var res = separateFilesAndDirs(fileInfos);
     var tgts = _(res.directories).pluck('path');
 
-    if (res.markdownFiles.length > 0)
-      loggerText(`1. Found ${g(_(res.markdownFiles).pluck('name').join(', '))} in ${g(currentPath)}`);
-    else
-      loggerText(`1. Found nothing in ${g(currentPath)}`);
+    if (res.markdownFiles.length > 0){
+
+      // loggerText(`1. Found ${g(_(res.markdownFiles).pluck('name').join(', '))} in ${g(currentPath)}`);
+		}
+    else{
+
+      // loggerText(`1. Found nothing in ${g(currentPath)}`);
+		}
 
     return {
       markdownFiles :  res.markdownFiles,

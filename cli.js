@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 'use strict';
-console.time('doc-templite')
 const meow = require('meow');
 const fs = require('fs')
 const twoLog = require('two-log-min')
@@ -48,8 +47,11 @@ function cleanPath(path) {
 	//  所有 空格 去除
 	return homeExpanded.replace(/\s/g, '\\ ');
 }
+let howMany = 0
+const cliLog = log.start(`starting doc-templite`,{log:'cli'})
+
 function transformAndSave(files, opts){
-	log.text('2. ready to transform')
+	cliLog('2. ready to transform')
 
 	let transformeds = files.map(function(x){
 		let content = fs.readFileSync(x.path, 'utf8');
@@ -61,10 +63,12 @@ function transformAndSave(files, opts){
 	})
 
 	let changeds = transformeds.filter(function (x) { return x.transformed; })
-    let unchangeds = transformeds.filter(function (x) { return !x.transformed; })
+	let unchangeds = transformeds.filter(function (x) { return !x.transformed && !x.why; })
+	let sameCnt = transformeds.filter(function (x) { return x.why; })
+
 
 	unchangeds.forEach(function (x) {
-		log.text(`${c(x.path)} no transform / same content`);
+		// log.text(`${c(x.path)} no transform`);
 	  });
 
 	changeds.forEach(function (x) {
@@ -74,15 +78,20 @@ function transformAndSave(files, opts){
 		  log.one(`${c(x.path)} updated`);
 		  fs.writeFileSync(x.path, x.data, 'utf8');
 		}
+		howMany ++
 	});
+
+	sameCnt.forEach(function(x){
+		cliLog(`${c(x.path)} same content`);
+		howMany ++
+	})
 }
 
-log.start(`starting doc-templite`)
 for (let i = 0; i < cli.input.length; i++){
 	let target = cleanPath(cli.input[i]);
 	let stat = fs.statSync(target);
 
-	log.text(`1. files getting...`)
+	cliLog(`1. files getting...`)
 	if (stat.isDirectory()){
 		files = file.findMarkdownFiles(target)
 	}else{
@@ -94,11 +103,10 @@ for (let i = 0; i < cli.input.length; i++){
 	try{
 		transformAndSave(files, opts)
 	}catch(e){
-		console.log(r('\n'+e.stack))
+		console.info(r('\n'+e.stack))
 		process.exitCode = 1
 	}
-	// log.text(`search markdown file ... ${JSON.stringify(files,null,2)}`)
+	// cliLog(`search markdown file ... ${JSON.stringify(files,null,2)}`)
 }
-
-log.stop(`doc-templite done [${onlyRead?"onlyRead":"Write"} mode]`,{ora:'succeed'})
-console.timeEnd('doc-templite')
+let timeAndFile = `time:${c(process.uptime())}s,had ${c(howMany)} file`
+log.stop(`doc-templite done [${onlyRead?"onlyRead":"Write"} mode]\n${timeAndFile}`,{log:'cli'})

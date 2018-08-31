@@ -51,7 +51,7 @@
 		"templite": "^1.1.0",
 		"toml": "^2.3.3",
 		"turbocolor": "^2.4.5",
-		"two-log-min": "^0.3.0",
+		"two-log-min": "^1.0.3",
 		"underscore": "^1.9.1"
 	},
 	"devDependencies": {

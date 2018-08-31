@@ -4,7 +4,7 @@ const toml = require('toml');
 const os = require('os')
 const dlv = require('dlv');
 const templiteParse = require('templite')
-const { oneOra,loggerText } = require('two-log-min')
+const { oneOra,loggerText,loggerStart } = require('two-log-min')
 const {c,g} = require('./src/util')
 
 const updateTemplite = require('./src/updateTemplite')
@@ -41,6 +41,7 @@ function removeTag(line){
 	return line
 }
 
+
 module.exports = function docTemplite(content, opts){
 	if (typeof content !== 'string') {
 		throw new TypeError(`Expected a string, got ${c(typeof content)}`);
@@ -49,12 +50,14 @@ module.exports = function docTemplite(content, opts){
 	let transformed = false;
 	let data = content;
 	let currentBlocks = []
+	let why = null
+
+	const mainLog = loggerStart(c(`${opts.path} searching doc-templite <-tags->`),{log:'main'})
 
 	// must had doc-templite tag
 	let lines = content.split(os.EOL)
 
-	loggerText(c(`${opts.path} searching doc-templite <-tags->`))
-	loggerText(g('all:'+lines.length))
+	mainLog(g('all:'+lines.length+'lines'))
 	let tags;
 
 	try{
@@ -72,14 +75,14 @@ module.exports = function docTemplite(content, opts){
 	}
 	// currentBlock : [[],[]] || []
 	if (currentBlocks.length) {
-		loggerText(c(`${opts.path} had <-tags->`))
+		mainLog(c(`${opts.path} had <-tags->`))
 
 		// Support md more tags with templite
 		for(let i = 0; i < currentBlocks.length; i ++){
 			let indexBlock = currentBlocks[i]
-			loggerText(`<-tag-${i}->: ${toS(tags[i])}`)
+			mainLog(`<-tag-${i}->: ${toS(tags[i])}`)
 
-			loggerText(g(`block-${i}:${toS(indexBlock)}`))
+			mainLog(g(`block-${i}:${toS(indexBlock)}`))
 
 			let singleRemark = indexBlock.filter(function(line){
 				line = line.trim()
@@ -109,7 +112,7 @@ module.exports = function docTemplite(content, opts){
 				for(let remarkIdx = 0; remarkIdx < currentRemarks.length; remarkIdx++){
 					let indexRemark = currentRemarks[remarkIdx]
 					mulitRemark.push(indexRemark.join(os.EOL))
-					loggerText(`tomls-${remarkIdx}: ${toS(indexRemark)}`)
+					mainLog(`tomls-${remarkIdx}: ${toS(indexRemark)}`)
 				}
 			}
 
@@ -120,7 +123,7 @@ module.exports = function docTemplite(content, opts){
 				line = line.trim()
 				let ready2Toml = removeTag(line)
 
-				loggerText(c('toml:'+ready2Toml))
+				mainLog(c('toml:'+ready2Toml))
 				let userToml = {};
 				try{
 					userToml = toml.parse(ready2Toml)
@@ -136,26 +139,28 @@ module.exports = function docTemplite(content, opts){
 			})
 			blocksTomls.push(mergeOpts)
 
-			loggerText(c('toml -> object:\n'+toS(mergeOpts)))
+			mainLog(c('toml -> object:\n'+toS(mergeOpts)))
 
 			let ID = mergeOpts.docTempliteId || 'readme';
 			let id2Templite = dlv(opts.templite, ID)
-			loggerText(c(`templite <${ID}>:\n`+id2Templite))
+			mainLog(c(`templite <${ID}>:\n`+id2Templite))
 
 			if(id2Templite){
 				let templiteTransformed = templiteParse(id2Templite, mergeOpts)
-				loggerText(c('Transformed:\n'+templiteTransformed))
+				mainLog(c('Transformed:\n'+templiteTransformed))
 
 				let update = `${START}${os.EOL}${tomlRemark.join(os.EOL)}${os.EOL}${templiteTransformed}${os.EOL}${ END}`
 
 				data = updateTemplite(data, update, matchesStart, matchesEnd, i)
 
 				if (data) {
-					// loggerText(c(toS(data)))
+					// mainLog(c(toS(data)))
 
 					if(i == currentBlocks.length - 1){
 						if(data !== content){
 							transformed = true;
+						}else if(data === content) {
+							why = 'some content'
 						}
 					}
 				}
@@ -164,14 +169,15 @@ module.exports = function docTemplite(content, opts){
 			}
 		}
 	}else{
-		loggerText(c(`${opts.path} no <-tags->`))
+		mainLog(c(`${opts.path} no <-tags->`))
 	}
 
 	let result = {
 		path: opts.path,
 		toml: blocksTomls,
 		transformed: transformed,
-		data: data
+		data: data,
+		why
 	}
 
 	return result;
