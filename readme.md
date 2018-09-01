@@ -16,7 +16,7 @@ npm i -g doc-templite
 
 ## Example
 
-1. change file `readme.md` 👇 must got doc-templite tag
+### 1. change file `readme.md` 👇 must got doc-templite tag
 
 ``` html
 <!-- doc-templite START -->
@@ -31,7 +31,7 @@ age = 18 -->
 > Note: in START-END block, we use toml and with `<!-- -->`
 > Multi-line only allow **one**, Single-line can **more**
 
-2. need templite file `.doc-templite.js` in cli pwd
+### 2. need templite file `.doc-templite.js` in cli pwd
 
 > readme field match `<!-- docTempliteId = 'readme' -->` of `1. readme.md`
 
@@ -45,7 +45,7 @@ module.exports = {
 
 > NOTE: default `docTempliteId === 'readme'`
 
-3. run cli `doc-templite .` with `.doc-templite.js` dir
+### 3. run cli `doc-templite .` with `.doc-templite.js` dir
 
 > search all file , but only work with **doc-templite tag**
 
@@ -53,7 +53,7 @@ module.exports = {
 doc-templite .
 ```
 
-4. done , and the `readme.md` file content change
+### 4. done , and the `readme.md` file content change
 
 ```
 <!-- doc-templite START -->

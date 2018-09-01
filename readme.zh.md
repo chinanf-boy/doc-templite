@@ -15,7 +15,7 @@
 
 ## 例
 
-1.  改变`readme.md`👇必须有doc-templite标签
+### 1.  改变`readme.md`👇必须有doc-templite标签
 
 ```html
 <!-- doc-templite START -->
@@ -31,7 +31,7 @@ age = 18 -->
 
 > 多行注释只能**一段**, 单行注释可以**多个**
 
-2.  需要 templite 文件`.doc-templite.js`,在命令行运行时的目录
+### 2.  需要 templite 文件`.doc-templite.js`,在命令行运行时的目录
 
 > 注意: readme 字段匹配`1. readme.md`中的`<! -  doc-templite-id ='readme' - >`
 
@@ -45,7 +45,7 @@ module.export = {
 
 > 注意: 默认 `docTempliteId === 'readme'`
 
-3.  运行`doc-templite .`
+### 3.  运行`doc-templite .`
 
 > 搜索所有文件,但只会修改有 **doc-templite标签** 的文件
 
@@ -53,7 +53,7 @@ module.export = {
 
 > 目录下要有 `.doc-templite.js` 文件喔
 
-4.  做完了,`readme.md`文件内容变成
+### 4.  做完了,`readme.md`文件内容变成
 
 ```
 <!-- doc-templite START -->
