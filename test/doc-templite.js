@@ -85,7 +85,9 @@ test('more doc-templite tag Same content', t => {
     let {transformed,data,toml} = result
 
 	t.is(toml.length,2);
-	t.is(toml[0].age,18);
+    t.is(toml[0].age,18);
+    t.deepEqual(toArrTrim(data),toArrTrim(f))
+    
     t.false(transformed);
 });
 
