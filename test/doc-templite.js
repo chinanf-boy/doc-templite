@@ -10,6 +10,7 @@ test.todo('doc-templite')
 
 const getPath = (p) => path.resolve(testDir,p)
 const getF = (p) => fs.readFileSync(p,'utf8')
+const toArrTrim = (str) => str.split('\n').map(s =>s.trimRight())
 
 test('file: no doc-templite tag', t => {
     const p = getPath('./features/no-doc-templite.md')
@@ -86,7 +87,6 @@ test('more doc-templite tag Same content', t => {
 	t.is(toml.length,2);
 	t.is(toml[0].age,18);
     t.false(transformed);
-    t.is(data,f)
 });
 
 test('more doc-templite tag', t => {
@@ -106,5 +106,5 @@ test('more doc-templite tag', t => {
 	t.is(toml.length,2);
 	t.is(toml[0].age,18);
     t.true(transformed);
-    t.is(data,gen)
+    t.deepEqual(toArrTrim(data),toArrTrim(gen))
 });

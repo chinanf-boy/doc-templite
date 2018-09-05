@@ -157,9 +157,11 @@ module.exports = function docTemplite(content, opts){
 					// mainLog(c(toS(data)))
 
 					if(i == currentBlocks.length - 1){
-						if(data !== content){
+						let cTs = content.split('\n')
+						// Fix in windows
+						if(data.split('\n').some((d,index) => d.trimRight() !== cTs[index].trimRight())){
 							transformed = true;
-						}else if(data === content) {
+						}else{
 							why = 'some content'
 						}
 					}
