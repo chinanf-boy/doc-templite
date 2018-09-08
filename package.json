@@ -46,7 +46,7 @@
 	],
 	"dependencies": {
 		"dlv": "^1.1.2",
-		"match-file-contents": "^1.0.1",
+		"match-file-contents": "^1.0.2",
 		"meow": "^5.0.0",
 		"templite": "^1.1.0",
 		"toml": "^2.3.3",

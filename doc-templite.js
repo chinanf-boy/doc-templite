@@ -151,7 +151,7 @@ module.exports = function docTemplite(content, opts) {
 
 				let update = `${START}\n${tomlRemark.join('\n')}\n${templiteTransformed}\n${END}`
 
-				data = updateTemplite(data, update, matchesStart, matchesEnd, i)
+				data = updateTemplite.updateSection(data, update, matchesStart, matchesEnd, i)
 
 				if (data) {
 					// mainLog(c(toS(data)))
