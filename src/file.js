@@ -21,8 +21,13 @@ function separateFilesAndDirs(fileInfos) {
 
 function findRec(currentPath) {
   function getStat (entry) {
-    var target = path.join(currentPath, entry),
+		var target = path.join(currentPath, entry)
+		let stat
+		try {
       stat = fs.statSync(target);
+		} catch (error) {
+			return ''
+		}
 
     return  _(stat).extend({
       name: entry,
@@ -49,7 +54,7 @@ function findRec(currentPath) {
     };
   }
 
-  var stats                  =  _(fs.readdirSync(currentPath)).map(getStat)
+  var stats                  =  _(fs.readdirSync(currentPath)).map(getStat).filter(x =>x)
     , res                    =  process(stats)
     , markdownsInSubdirs     =  _(res.subdirs).map(findRec)
     , allMarkdownsHereAndSub =  res.markdownFiles.concat(markdownsInSubdirs);
