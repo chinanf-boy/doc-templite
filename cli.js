@@ -86,7 +86,7 @@ function transformAndSave(files, opts){
 	});
 
 	sameCnt.forEach(function(x){
-		cliLog(`${c(x.path)} same content`);
+		cliLog(`${c(x.path)} same content`,{only:'log'});
 		howMany ++
 	})
 }
@@ -95,7 +95,7 @@ for (let i = 0; i < cli.input.length; i++){
 	let target = cleanPath(cli.input[i]);
 	let stat = fs.statSync(target);
 
-	cliLog(`1. files getting...`)
+	cliLog(`1. files getting...`,{only:'log'})
 	if (stat.isDirectory()){
 		files = file.findMarkdownFiles(target)
 	}else{

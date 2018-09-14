@@ -57,7 +57,7 @@ module.exports = function docTemplite(content, opts) {
 	// must had doc-templite tag
 	let lines = content.split('\n')
 
-	mainLog(g('all:' + lines.length + ' lines'))
+	mainLog(g('all:' + lines.length + ' lines'),{only:'log'})
 	let tags;
 
 	try {
@@ -80,9 +80,9 @@ module.exports = function docTemplite(content, opts) {
 		// Support md more tags with templite
 		for (let i = 0; i < currentBlocks.length; i++) {
 			let indexBlock = currentBlocks[i]
-			mainLog(`<-tag-${i}->: ${toS(tags[i])}`)
+			mainLog(`<-tag-${i}->: ${toS(tags[i])}`,{only:'log'})
 
-			mainLog(g(`block-${i}:${toS(indexBlock)}`))
+			mainLog(g(`block-${i}:${toS(indexBlock)}`),{only:'log'})
 
 			let singleRemark = indexBlock.filter(function (line) {
 				line = line.trim()
@@ -112,7 +112,7 @@ module.exports = function docTemplite(content, opts) {
 				for (let remarkIdx = 0; remarkIdx < currentRemarks.length; remarkIdx++) {
 					let indexRemark = currentRemarks[remarkIdx]
 					mulitRemark.push(indexRemark.join('\n'))
-					mainLog(`tomls-${remarkIdx}: ${toS(indexRemark)}`)
+					mainLog(`tomls-${remarkIdx}: ${toS(indexRemark)}`,{only:'log'})
 				}
 			}
 
@@ -123,7 +123,7 @@ module.exports = function docTemplite(content, opts) {
 				line = line.trim()
 				let ready2Toml = removeTag(line)
 
-				mainLog(c('toml:' + ready2Toml))
+				mainLog(c('toml:' + ready2Toml),{only:'log'})
 				let userToml = {};
 				try {
 					userToml = toml.parse(ready2Toml)
@@ -139,15 +139,15 @@ module.exports = function docTemplite(content, opts) {
 			})
 			blocksTomls.push(mergeOpts)
 
-			mainLog(c('toml -> object:\n' + toS(mergeOpts)))
+			mainLog(c('toml -> object:\n' + toS(mergeOpts)),{only:'log'})
 
 			let ID = mergeOpts.docTempliteId || 'readme';
 			let id2Templite = dlv(opts.templite, ID)
-			mainLog(c(`templite <${ID}>:\n` + id2Templite))
+			mainLog(c(`templite <${ID}>:\n` + id2Templite),{only:'log'})
 
 			if (id2Templite) {
 				let templiteTransformed = templiteParse(id2Templite, mergeOpts)
-				mainLog(c('Transformed:\n' + templiteTransformed))
+				mainLog(c('Transformed:\n' + templiteTransformed),{only:'log'})
 
 				let update = `${START}\n${tomlRemark.join('\n')}\n${templiteTransformed}\n${END}`
 
