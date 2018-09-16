@@ -51,7 +51,6 @@ let howMany = 0
 const cliLog = log.start(`starting doc-templite`,{log:'cli'})
 
 function transformAndSave(files, opts){
-	cliLog('2. ready to transform')
 
 	let transformeds = files.map(function(x){
 		let content = fs.readFileSync(x.path, 'utf8');
@@ -105,6 +104,7 @@ for (let i = 0; i < cli.input.length; i++){
 	opts.templite = templite
 
 	try{
+		cliLog('2. ready to transform')
 		transformAndSave(files, opts)
 	}catch(e){
 		console.info(r('\n'+e.stack))
