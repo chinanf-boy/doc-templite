@@ -91,23 +91,26 @@ function transformAndSave(files, opts){
 }
 
 for (let i = 0; i < cli.input.length; i++){
-	let target = cleanPath(cli.input[i]);
-	let stat = fs.statSync(target);
-
-	cliLog(`1. files getting...`,{only:'log'})
-	if (stat.isDirectory()){
-		files = file.findMarkdownFiles(target)
-	}else{
-		files = [{ path: target}]
-	}
-	let opts = cli.flags
-	opts.templite = templite
-
 	try{
+		
+		let target = cleanPath(cli.input[i]);
+		let stat = fs.statSync(target);
+
+		cliLog(`1. files getting...`,{only:'log'})
+		if (stat.isDirectory()){
+			files = file.findMarkdownFiles(target)
+		}else{
+			files = [{ path: target}]
+		}
+		let opts = cli.flags
+		opts.templite = templite
+
+
 		cliLog('2. ready to transform')
 		transformAndSave(files, opts)
+
 	}catch(e){
-		console.info(r('\n'+e.stack))
+		console.error(r('\n'+e.stack))
 		process.exitCode = 1
 	}
 	// cliLog(`search markdown file ... ${JSON.stringify(files,null,2)}`)
