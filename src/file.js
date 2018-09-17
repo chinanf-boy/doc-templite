@@ -24,7 +24,10 @@ function findRec(currentPath) {
 		var target = path.join(currentPath, entry)
 		let stat
 		try {
-      stat = fs.statSync(target);
+			stat = fs.statSync(target);
+			if(stat.isDirectory() && entry === '.git'){
+				return ''
+			}
 		} catch (error) {
 			return ''
 		}
