@@ -19,13 +19,15 @@ function separateFilesAndDirs(fileInfos) {
   };
 }
 
+const ignoreArr = ['.git','node_modules']
+
 function findRec(currentPath) {
   function getStat (entry) {
 		var target = path.join(currentPath, entry)
 		let stat
 		try {
 			stat = fs.statSync(target);
-			if(stat.isDirectory() && entry === '.git'){
+			if(stat.isDirectory() && ignoreArr.some(x =>x===entry)){
 				return ''
 			}
 		} catch (error) {
