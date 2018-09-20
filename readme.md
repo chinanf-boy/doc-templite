@@ -18,7 +18,7 @@ npm i -g doc-templite
 
 ### 1. change file `readme.md` 👇 must got doc-templite tag
 
-``` html
+```html
 <!-- doc-templite START -->
 <!-- docTempliteId = 'readme' -->
 
@@ -35,12 +35,12 @@ age = 18 -->
 
 > readme field match `<!-- docTempliteId = 'readme' -->` of `1. readme.md`
 
-``` js
+```js
 module.exports = {
-  readme:`name | age
+	readme: `name | age
 ---------|----------
- {{ name }} | {{ age }}`
-}
+ {{ name }} | {{ age }}`,
+};
 ```
 
 > NOTE: default `docTempliteId === 'readme'`
@@ -69,12 +69,9 @@ yobrave | 18
 <!-- doc-templite END -->
 ```
 
-name | age
----------|----------
-yobrave | 18
-
-
-
+| name    | age |
+| ------- | --- |
+| yobrave | 18  |
 
 ## CLI
 
@@ -95,7 +92,6 @@ npm install --global doc-templite
 	⭐ [High Options]
 		--OR  only Read, no reWrite files <default:false>
 ```
-
 
 <!-- ## API
 
@@ -118,14 +114,11 @@ Type: | `boolean`
 Default: | `false`
 Desc: | Lorem ipsum. -->
 
-
-
 ## concat
 
 - [doctoc](https://github.com/thlorenz/doctoc) Generates table of contents for markdown files
 - [templite](https://github.com/lukeed/templite) Lightweight templating in 150 bytes
 - [toml](https://github.com/toml-lang/toml) Tom's Obvious, Minimal Language
-
 
 ## License
 

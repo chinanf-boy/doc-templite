@@ -1,192 +1,214 @@
 'use strict';
 
+const os = require('os');
 const toml = require('toml');
-const os = require('os')
 const dlv = require('dlv');
-const templiteParse = require('templite')
-const { loggerStart } = require('two-log-min')
-const { c, g, r } = require('./src/util')
+const templiteParse = require('templite');
+const {loggerStart} = require('two-log-min');
+const {c, g, r} = require('./src/util');
 
-const updateTemplite = require('./src/updateTemplite')
-const errorInfo = require('./src/errorInfo')
-const { toS } = require('./src/util')
+const updateTemplite = require('./src/updateTemplite');
+const errorInfo = require('./src/errorInfo');
+const {toS} = require('./src/util');
 
-const START = '<!-- doc-templite START generated -->'
-const END = '<!-- doc-templite END generated -->'
+const START = '<!-- doc-templite START generated -->';
+const END = '<!-- doc-templite END generated -->';
 
 function matchesStart(line) {
 	return line.startsWith('<!-- doc-templite START');
 }
 
 function matchesEnd(line) {
-	return line.startsWith('<!-- doc-templite END')
+	return line.startsWith('<!-- doc-templite END');
 }
 
 function remarkStart(line) {
-	return (/<!--/).test(line);
+	return /<!--/.test(line);
 }
 
 function remarkEnd(line) {
-	return (/-->/).test(line);
+	return /-->/.test(line);
 }
 
 function isRemark(line) {
-	return line.startsWith('<!--') && line.endsWith('-->')
+	return line.startsWith('<!--') && line.endsWith('-->');
 }
 
 function removeTag(line) {
 	if (isRemark(line)) {
-		line = line.slice(4, -3)
+		line = line.slice(4, -3);
 	}
-	return line
+	return line;
 }
-
 
 module.exports = function docTemplite(content, opts) {
 	if (typeof content !== 'string') {
 		throw new TypeError(`Expected a string, got ${c(typeof content)}`);
 	}
-	let blocksTomls = [];
+	const blocksTomls = [];
 	let transformed = false;
 	let data = content;
-	let currentBlocks = []
-	let why = null
+	const currentBlocks = [];
+	let why = null;
 
-	const mainLog = loggerStart(c(`${g(opts.path)} searching doc-templite <-tags->`), { log: 'main' })
+	const mainLog = loggerStart(
+		c(`${g(opts.path)} searching doc-templite <-tags->`),
+		{log: 'main'}
+	);
 
-	// must had doc-templite tag
-	let lines = content.split('\n')
+	// Must had doc-templite tag
+	const lines = content.split('\n');
 
-	mainLog(g('all:' + lines.length + ' lines'),{only:'log'})
+	mainLog(g('all:' + lines.length + ' lines'), {only: 'log'});
 	let tags;
 
 	try {
-
 		tags = updateTemplite.parse(lines, matchesStart, matchesEnd, true);
 
-		tags.forEach(function (tag) {
+		tags.forEach(tag => {
 			if (tag.hasStart && tag.hasEnd) {
-				currentBlocks.push(lines.slice(tag.startIdx + 1, tag.endIdx))
+				currentBlocks.push(lines.slice(tag.startIdx + 1, tag.endIdx));
 			}
-		})
-
+		});
 	} catch (err) {
-		throw new Error(`${c(opts.path)}\n - doc-templite tag:\n${err.message}`)
+		throw new Error(`${c(opts.path)}\n - doc-templite tag:\n${err.message}`);
 	}
-	// currentBlock : [[],[]] || []
+	// CurrentBlock : [[],[]] || []
 	if (currentBlocks.length) {
-		mainLog(c(`${opts.path} had <-tags->`))
+		mainLog(c(`${opts.path} had <-tags->`));
 
 		// Support md more tags with templite
 		for (let i = 0; i < currentBlocks.length; i++) {
-			let indexBlock = currentBlocks[i]
-			mainLog(`<-tag-${i}->: ${toS(tags[i])}`,{only:'log'})
+			const indexBlock = currentBlocks[i];
+			mainLog(`<-tag-${i}->: ${toS(tags[i])}`, {only: 'log'});
 
-			mainLog(g(`block-${i}:${toS(indexBlock)}`),{only:'log'})
+			mainLog(g(`block-${i}:${toS(indexBlock)}`), {only: 'log'});
 
-			let singleRemark = indexBlock.filter(function (line) {
-				line = line.trim()
-				return isRemark(line)
-			})
-			let removeSingle = indexBlock.filter(function (line) {
-				line = line.trim()
-				return !isRemark(line)
-			})
-			let mulitRemarkPtn
-			let currentRemarks = []
+			const singleRemark = indexBlock.filter(line => {
+				line = line.trim();
+				return isRemark(line);
+			});
+			const removeSingle = indexBlock.filter(line => {
+				line = line.trim();
+				return !isRemark(line);
+			});
+			let mulitRemarkPtn;
+			const currentRemarks = [];
 			try {
-
-				mulitRemarkPtn = updateTemplite.parse(removeSingle, remarkStart, remarkEnd, false)
-				mulitRemarkPtn.forEach(function (tag) {
+				mulitRemarkPtn = updateTemplite.parse(
+					removeSingle,
+					remarkStart,
+					remarkEnd,
+					false
+				);
+				mulitRemarkPtn.forEach(tag => {
 					if (tag.hasStart && tag.hasEnd) {
-						currentRemarks.push(removeSingle.slice(tag.startIdx, tag.endIdx + 1))
+						currentRemarks.push(
+							removeSingle.slice(tag.startIdx, tag.endIdx + 1)
+						);
 					}
-				})
+				});
 			} catch (err) {
-				throw new Error(`${c(opts.path)} - Toml:\n'${err.message}`)
+				throw new Error(`${c(opts.path)} - Toml:\n'${err.message}`);
 			}
 
-			let mulitRemark = []
+			const mulitRemark = [];
 			if (currentRemarks.length) {
-
-				for (let remarkIdx = 0; remarkIdx < currentRemarks.length; remarkIdx++) {
-					let indexRemark = currentRemarks[remarkIdx]
-					mulitRemark.push(indexRemark.join('\n'))
-					mainLog(`tomls-${remarkIdx}: ${toS(indexRemark)}`,{only:'log'})
+				for (
+					let remarkIdx = 0;
+					remarkIdx < currentRemarks.length;
+					remarkIdx++
+				) {
+					const indexRemark = currentRemarks[remarkIdx];
+					mulitRemark.push(indexRemark.join('\n'));
+					mainLog(`tomls-${remarkIdx}: ${toS(indexRemark)}`, {only: 'log'});
 				}
 			}
 
+			const tomlRemark = singleRemark.concat(mulitRemark);
 
-			let tomlRemark = singleRemark.concat(mulitRemark)
+			const userTomls = tomlRemark.map(line => {
+				line = line.trim();
+				const ready2Toml = removeTag(line);
 
-			let userTomls = tomlRemark.map(function (line) {
-				line = line.trim()
-				let ready2Toml = removeTag(line)
-
-				mainLog(c('toml:' + ready2Toml),{only:'log'})
+				mainLog(c('toml:' + ready2Toml), {only: 'log'});
 				let userToml = {};
 				try {
-					userToml = toml.parse(ready2Toml)
+					userToml = toml.parse(ready2Toml);
 				} catch (e) {
-					let E = errorInfo('toml', { e, line: ready2Toml })
+					const E = errorInfo('toml', {e, line: ready2Toml});
 					throw new Error(`${c(opts.path)} TOML Parse error:\n${E}`);
 				}
-				return userToml
-			})
-			let mergeOpts = {}
-			userTomls.forEach(function (singleTomlOpt) {
-				!!Object.keys(singleTomlOpt).length && (mergeOpts = Object.assign(mergeOpts, singleTomlOpt))
-			})
-			blocksTomls.push(mergeOpts)
+				return userToml;
+			});
+			let mergeOpts = {};
+			userTomls.forEach(singleTomlOpt => {
+				Boolean(Object.keys(singleTomlOpt).length) &&
+					(mergeOpts = Object.assign(mergeOpts, singleTomlOpt));
+			});
+			blocksTomls.push(mergeOpts);
 
-			mainLog(c('toml -> object:\n' + toS(mergeOpts)),{only:'log'})
+			mainLog(c('toml -> object:\n' + toS(mergeOpts)), {only: 'log'});
 
-			let ID = mergeOpts.docTempliteId || 'readme';
-			let id2Templite = dlv(opts.templite, ID)
-			mainLog(c(`templite <${ID}>:\n` + id2Templite),{only:'log'})
+			const ID = mergeOpts.docTempliteId || 'readme';
+			const id2Templite = dlv(opts.templite, ID);
+			mainLog(c(`templite <${ID}>:\n` + id2Templite), {only: 'log'});
 
 			if (id2Templite) {
-				let templiteTransformed = templiteParse(id2Templite, mergeOpts)
-				mainLog(c('Transformed:\n' + templiteTransformed),{only:'log'})
+				const templiteTransformed = templiteParse(id2Templite, mergeOpts);
+				mainLog(c('Transformed:\n' + templiteTransformed), {only: 'log'});
 
-				let update = `${START}\n${tomlRemark.join('\n')}\n${templiteTransformed}\n${END}`
+				const update = `${START}\n${tomlRemark.join(
+					'\n'
+				)}\n${templiteTransformed}\n${END}`;
 
-				data = updateTemplite.updateSection(data, update, matchesStart, matchesEnd, i)
+				data = updateTemplite.updateSection(
+					data,
+					update,
+					matchesStart,
+					matchesEnd,
+					i
+				);
 
 				if (data) {
-					// mainLog(c(toS(data)))
+					// MainLog(c(toS(data)))
 
 					if (i == currentBlocks.length - 1) {
-						let cTs = content.split('\n')
+						const cTs = content.split('\n');
 						// Fix CRLF/LF, each line equal trim right , just string equal
-						if (data.split('\n').some((d, index) => {
-							if(cTs[index]){
-								return  d.trimRight() !== cTs[index].trimRight()
-							}else{
-								return cTs[index] !== d
-							}
-						})) {
+						if (
+							data.split('\n').some((d, index) => {
+								if (cTs[index]) {
+									return d.trimRight() !== cTs[index].trimRight();
+								}
+								return cTs[index] !== d;
+							})
+						) {
 							transformed = true;
 						} else {
-							why = 'some content'
+							why = 'some content';
 						}
 					}
 				}
 			} else {
-				throw new Error(`${c(opts.path)} no match doc-templite \nid:${g(mergeOpts.docTempliteId)} `)
+				throw new Error(
+					`${c(opts.path)} no match doc-templite \nid:${g(
+						mergeOpts.docTempliteId
+					)} `
+				);
 			}
 		}
 	} else {
-		mainLog(c(`${opts.path} no <-tags->`))
+		mainLog(c(`${opts.path} no <-tags->`));
 	}
 
-	let result = {
+	const result = {
 		path: opts.path,
 		toml: blocksTomls,
-		transformed: transformed,
-		data: data,
+		transformed,
+		data,
 		why
-	}
+	};
 
 	return result;
 };

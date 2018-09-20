@@ -1,1 +1,1 @@
-module.exports = require('match-file-contents')
+module.exports = require('match-file-contents');
