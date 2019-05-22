@@ -116,6 +116,7 @@ Desc: | Lorem ipsum. -->
 
 ## concat
 
+- [find-files-rust](https://github.com/chinanf-boy/find-files-rust) rust crate(ignore) power for Search all file in Current Dir
 - [doctoc](https://github.com/thlorenz/doctoc) Generates table of contents for markdown files
 - [templite](https://github.com/lukeed/templite) Lightweight templating in 150 bytes
 - [toml](https://github.com/toml-lang/toml) Tom's Obvious, Minimal Language

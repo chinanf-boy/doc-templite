@@ -105,7 +105,7 @@ for (let i = 0; i < cli.input.length; i++) {
 
 		cliLog(`1. files getting...`, {only: 'log'});
 		if (stat.isDirectory()) {
-			files = file.findMarkdownFiles(target);
+			files = file.findMarkdownFiles();
 		} else {
 			files = [{path: target}];
 		}
