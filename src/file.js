@@ -1,10 +1,10 @@
 const fFiles = require('find-files-rust');
 
 const markdownExts = ['.md', '.markdown'];
-function f() {
+function fd(s) {
 	let container = [];
 
-	fFiles.mds.forEach(f => {
+	fFiles.find(s).forEach(f => {
 		if (markdownExts.some(ext => f.endsWith(ext))) {
 			container.push({path: f});
 		}
@@ -12,4 +12,4 @@ function f() {
 
 	return container;
 }
-module.exports = {findMarkdownFiles: f};
+module.exports = {findMarkdownFiles: fd};
